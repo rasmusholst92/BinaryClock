@@ -12,7 +12,8 @@ def set_24_hour(event):
     global is_24_hour
     if event.action == ACTION_PRESSED:
         is_24_hour = True
-        sense.show_letter("2")
+        global vertical
+        vertical = False
 
 def set_12_hour(event):
     '''Koden for 12 timers ur'''
@@ -21,7 +22,6 @@ def set_12_hour(event):
         global am_pm
         is_24_hour = False
         am_pm = True
-        sense.show_letter("1")
 
 def set_rotation(event):
     '''Skifter rotationen mellem 0 & 90 grader'''
@@ -31,6 +31,7 @@ def set_rotation(event):
         rotation = 0 if rotation == 90 else 90
         vertical = True
         sense.rotation = rotation
+        sense.clear()
 
 def dec_to_bin(value):
     binary = bin(value)[1:].zfill(8)
@@ -46,7 +47,6 @@ def get_binary_time(am_pm):
                 hour -=12
             if hour == 0:
                 hour = 12
-    hour = 12
     binary_hour = dec_to_bin(int(hour))
     binary_minute = dec_to_bin(int(minute))
     binary_second = dec_to_bin(int(second))
@@ -71,6 +71,24 @@ def display(vertical, am_pm):
                 else:
                     sense.set_pixel(y,x,(0,0,0))
 
+def r(event):
+    global vertical
+    if(event.action == ACTION_PRESSED):
+        vertical = not vertical
+        sense.clear()
+
+def a(event):
+    global am_pm
+    if(event.action == ACTION_PRESSED):
+        am_pm = False
+        sense.clear()
+
+def p(event):
+    global am_pm
+    if(event.action == ACTION_PRESSED):
+        am_pm = True
+        sense.clear()
+
 sense.clear()
 
 parser = argparse.ArgumentParser()
@@ -88,16 +106,9 @@ if (args.am_pm.lower() == 'true'):
     am_pm = True
 
 while True:
-    display(vertical, am_pm)
-
-
-while True:
-    while is_24_hour is None:
         time.sleep(0.1)
-        sense.stick.direction_right = set_24_hour
-        sense.stick.direction_left = set_12_hour
-        sense.stick.direction_up = set_rotation
+        sense.stick.direction_up = r
+        sense.stick.direction_right = a
+        sense.stick.direction_left = p
+        sense.clear()
         display(vertical, am_pm)
-
-
-
