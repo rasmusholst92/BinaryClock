@@ -62,20 +62,20 @@ def display(vertical, am_pm):
                 continue
             if binary_time[pixel_index] == "1":
                 if(vertical):
-                    sense.set_pixel(x,y(255,255,255))
+                    sense.set_pixel(x,y,(255,255,255))
                 else:
-                    sense.set_pixel(y,x(255,255,255))
+                    sense.set_pixel(y,x,(255,255,255))
             else:
                 if(vertical):
-                    sense.set_pixel(x,y(0,0,0))
+                    sense.set_pixel(x,y,(0,0,0))
                 else:
-                    sense.set_pixel(y,x(0,0,0))
+                    sense.set_pixel(y,x,(0,0,0))
 
 sense.clear()
 
 parser = argparse.ArgumentParser()
-parser.add_argument('--vertical', type=str, help="Diplay vertical")
-parser.add_argument('--am_pm', type=str, help="Display 12-hour format")
+parser.add_argument('--vertical', type=str, default="false", help="Diplay vertical")
+parser.add_argument('--am_pm', type=str,default="false", help="Display 12-hour format")
 args = parser.parse_args()
 
 vertical = False
@@ -87,13 +87,12 @@ if (args.vertical.lower() == 'true'):
 if (args.am_pm.lower() == 'true'):
     am_pm = True
 
-while (vertical | am_pm):
+while True:
     display(vertical, am_pm)
 
 
 while True:
     while is_24_hour is None:
-        sense.show_letter("?")
         time.sleep(0.1)
         sense.stick.direction_right = set_24_hour
         sense.stick.direction_left = set_12_hour
