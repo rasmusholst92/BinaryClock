@@ -7,6 +7,12 @@ sense = SenseHat()
 is_24_hour = None
 rotation = 0
 
+OFF = [0, 0, 0]
+RED = [255, 0, 0]
+GREEN = [0, 255, 0]
+BLUE = [0, 0, 255]
+
+
 def set_24_hour(event):
     '''Koden for 24 timers ur'''
     global is_24_hour
