@@ -97,11 +97,20 @@ if (args.vertical.lower() == 'true'):
 if (args.am_pm.lower() == 'true'):
     am_pm = True
 
-while True:
-        time.sleep(0.1)
-        sense.stick.direction_up = set_rotation
-        sense.stick.direction_right = set_24_hour
-        sense.stick.direction_left = set_12_hour
-        sense.stick.direction_down = set_rotation
-        sense.clear()
-        display(vertical, am_pm)
+
+def main():
+    '''
+    ENTRY POINT TO THE PROGRAM
+    '''
+
+    while True:
+            time.sleep(0.1)
+            sense.stick.direction_up = set_rotation
+            sense.stick.direction_right = set_24_hour
+            sense.stick.direction_left = set_12_hour
+            sense.stick.direction_down = set_rotation
+            sense.clear()
+            display(vertical, am_pm)
+
+if __name__ == '__main__':
+    exit(main())
