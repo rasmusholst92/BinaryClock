@@ -4,6 +4,7 @@ import time, argparse
 sense = SenseHat()
 
 try:
+    sense.show_message("Programmet starter", scroll_speed=0.04, text_colour=[0,255,0])
 
     is_24_hour = None
     rotation = 0
@@ -11,16 +12,17 @@ try:
     am_pm = False
 
     OFF = [0, 0, 0]
-    RED = [255, 0, 0]
-    GREEN = [0, 255, 0]
-    BLUE = [0, 0, 255]
-
+    RED = [255, 0, 0]   # Second
+    BLUE = [0, 0, 255]  # Minute
+    GREEN = [0, 255, 0] # Hour
 
     def dec_to_bin(value):
+        '''Konventerer decimaler til binært'''
         binary = bin(value)[1:].zfill(8)
         return binary
 
     def get_binary_time(am_pm):
+        '''Hentning af tid i binært'''
         current_time = time.strftime("%H:%M:%S")
         hour, minute, second = current_time.split(":")
         hour = int(hour)
@@ -37,22 +39,25 @@ try:
         return binary_time
 
     def display(vertical, am_pm):
+        '''Display af uret på Sense Hat'''
         binary_time = get_binary_time(am_pm)
         for x in range(8):
             for y in range(8):
                 pixel_index = x * 8 + y
                 if(pixel_index > 23):
                     continue
+                color = OFF
                 if binary_time[pixel_index] == "1":
-                    if(vertical):
-                        sense.set_pixel(x,y,(255,255,255))
+                    if pixel_index < 8:
+                        color = RED
+                    elif pixel_index < 16:
+                        color = BLUE
                     else:
-                        sense.set_pixel(y,x,(255,255,255))
-                else:
+                        color = GREEN
                     if(vertical):
-                        sense.set_pixel(x,y,(0,0,0))
+                        sense.set_pixel(x,y,color)
                     else:
-                        sense.set_pixel(y,x,(0,0,0))
+                        sense.set_pixel(y,x,color)
 
     def change_rotation(event):
         '''Skifter rotationen mellem 0 & 90 grader'''
@@ -63,18 +68,21 @@ try:
             sense.clear()
 
     def set_rotation(event):
+        '''Rotation af uret på Sense Hat'''
         global vertical
         if(event.action == ACTION_PRESSED):
             vertical = not vertical
             sense.clear()
 
     def set_24_hour(event):
+        '''Sætter uret til 24 timer visning'''
         global am_pm
         if(event.action == ACTION_PRESSED):
             am_pm = False
             sense.clear()
 
     def set_12_hour(event):
+        '''Sætter uret til 12 timer visning'''
         global am_pm
         if(event.action == ACTION_PRESSED):
             am_pm = True
@@ -103,4 +111,4 @@ try:
             display(vertical, am_pm)
 
 except KeyboardInterrupt:
-    sense.show_message("Programmet slutter", scroll_speed = 0.06, text_colour = [255, 0, 0])
+    sense.show_message("Programmet slutter", scroll_speed = 0.04, text_colour = [255, 0, 0])
