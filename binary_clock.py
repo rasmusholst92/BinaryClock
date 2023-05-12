@@ -40,10 +40,12 @@ def set_rotation(event):
         sense.clear()
 
 def dec_to_bin(value):
+    '''Konverter decimaler til binært'''
     binary = bin(value)[1:].zfill(8)
     return binary
 
 def get_binary_time(am_pm):
+    '''Henter tid i binært'''
     current_time = time.strftime("%H:%M:%S")
     hour, minute, second = current_time.split(":")
     hour = int(hour)
@@ -60,6 +62,7 @@ def get_binary_time(am_pm):
     return binary_time
 
 def display(vertical, am_pm):
+    '''Visning af uret på Sense Hat'''
     binary_time = get_binary_time(am_pm)
     for x in range(8):
         for y in range(8):
