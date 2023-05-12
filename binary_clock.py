@@ -14,7 +14,6 @@ sense = SenseHat()
 
 sense.show_message("Programmet starter", scroll_speed=0.04, text_colour=[0,255,0])
 
-rotation = 0
 vertical = False
 am_pm = False
 
@@ -66,34 +65,23 @@ def display(vertical, am_pm):
                 else:
                     sense.set_pixel(y,x,color)
 
-def change_rotation(event):
-    '''Skifter rotationen mellem 0 & 90 grader'''
-    global rotation
-    if event.action == ACTION_PRESSED:
-        rotation = 0 if rotation == 90 else 90
-        sense.rotation = rotation
-        sense.clear()
-
 def set_rotation(event):
     '''Rotation af uret på Sense Hat'''
     global vertical
     if(event.action == ACTION_PRESSED):
         vertical = not vertical
-        sense.clear()
 
 def set_24_hour(event):
     '''Sætter uret til 24 timer visning'''
     global am_pm
     if(event.action == ACTION_PRESSED):
         am_pm = False
-        sense.clear()
 
 def set_12_hour(event):
     '''Sætter uret til 12 timer visning'''
     global am_pm
     if(event.action == ACTION_PRESSED):
         am_pm = True
-        sense.clear()
 
 
 sense.clear()
@@ -114,6 +102,6 @@ while True:
         sense.stick.direction_up = set_rotation
         sense.stick.direction_right = set_24_hour
         sense.stick.direction_left = set_12_hour
-        #sense.stick.direction_down =
+        sense.stick.direction_down = set_rotation
         sense.clear()
         display(vertical, am_pm)
