@@ -1,0 +1,12 @@
+                                                                       
+[Unit]
+Description=Binary clock service
+After=multi-user.target
+
+[Service]
+type=simple
+ExecStart=/usr/bin/python home/pi/repos/binary_clock/BinaryClock/binary_clock.py
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target
