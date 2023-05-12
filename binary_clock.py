@@ -1,6 +1,9 @@
 from sense_hat import SenseHat, ACTION_PRESSED
 import time, argparse, signal, sys
 
+# pandoc binary_clock.1.md -s -t man -o binary_clock.1
+# man -l binary_clock.1
+
 def term_handler(signum, frame):
     '''SIGTERM til nedlukning af service udefra'''
     sense.show_message("Programmet slutter", scroll_speed = 0.04, text_colour = [255, 0, 0])
