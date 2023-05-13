@@ -19,7 +19,11 @@ sense.show_message("Programmet starter", scroll_speed=0.04, text_colour=[0,255,0
 
 vertical = False
 am_pm = False
+TIME_SEGMENT = 8
+MINUTE_SEGMENT = 16
+SECOND_SEGMENT = 24
 
+# Farver til pixels.
 OFF = [0, 0, 0]
 RED = [255, 0, 0]   # Second
 BLUE = [0, 0, 255]  # Minute
@@ -32,8 +36,7 @@ def dec_to_bin(value):
 
 def get_binary_time(am_pm):
     '''Hentning af tid i binært'''
-    current_time = time.strftime("%H:%M:%S")
-    hour, minute, second = current_time.split(":")
+    hour, minute, second = time.localtime()[3:6]
     hour = int(hour)
     if (am_pm):
         if hour >= 12:
@@ -47,19 +50,19 @@ def get_binary_time(am_pm):
     binary_time = binary_hour + binary_minute + binary_second
     return binary_time
 
-def display(vertical, am_pm):
-    '''Display af uret på Sense Hat'''
+def display(vertical: bool, am_pm: bool):
+    '''Display af uret på SenseHat'''
     binary_time = get_binary_time(am_pm)
     for x in range(8):
         for y in range(8):
             pixel_index = x * 8 + y
-            if(pixel_index > 23):
+            if(pixel_index > SECOND_SEGMENT - 1):
                 continue
             color = OFF
             if binary_time[pixel_index] == "1":
-                if pixel_index < 8:
+                if pixel_index < TIME_SEGMENT:
                     color = RED
-                elif pixel_index < 16:
+                elif pixel_index < MINUTE_SEGMENT:
                     color = BLUE
                 else:
                     color = GREEN
@@ -105,13 +108,13 @@ def main():
     '''
     ENTRY POINT TO THE PROGRAM
     '''
+    sense.stick.direction_up = set_rotation
+    sense.stick.direction_right = set_24_hour
+    sense.stick.direction_left = set_12_hour
+    sense.stick.direction_down = set_rotation
 
     while True:
             time.sleep(0.1)
-            sense.stick.direction_up = set_rotation
-            sense.stick.direction_right = set_24_hour
-            sense.stick.direction_left = set_12_hour
-            sense.stick.direction_down = set_rotation
             sense.clear()
             display(vertical, am_pm)
 
