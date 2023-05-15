@@ -9,7 +9,7 @@ setup(
     install_requires=['sense_hat'],
     entry_points={
         'console_scripts': [
-            'bin_clock = bin_clock.clock:main'
+            'bin_clock = bin_clock:main'
         ]
     }
 )
