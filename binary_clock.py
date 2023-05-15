@@ -1,6 +1,14 @@
+#!/usr/bin/env python3
+
 from sense_hat import SenseHat, ACTION_PRESSED
 import time, argparse, signal, sys
 from flask import Flask, jsonify
+from threading import Thread
+
+#  cd /lib/systemd/system
+# sudo systemctl status binary_clock.service
+
+# python3 binary_clock.py --vertical "true" --am_pm "true"
 
 # pandoc binary_clock.1.md -s -t man -o binary_clock.1
 # man -l binary_clock.1
@@ -127,6 +135,9 @@ def sensehat_data():
     }
     return jsonify(data)
 
+def run_flask():
+    app.run(port = 5000)
+
 # Main så man-page kunne fungerer
 def main():
     '''
@@ -143,5 +154,7 @@ def main():
             display(vertical, am_pm)
 
 if __name__ == '__main__':
-    app.run(port = 5000)
-    exit(main())
+    # Starter API via seperat thread.
+    Thread(target=run_flask).start()
+
+    main()
