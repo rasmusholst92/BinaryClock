@@ -1,5 +1,6 @@
 from sense_hat import SenseHat, ACTION_PRESSED
 import time, argparse, signal, sys
+from flask import Flask, jsonify
 
 # pandoc binary_clock.1.md -s -t man -o binary_clock.1
 # man -l binary_clock.1
@@ -104,6 +105,19 @@ if (args.am_pm.lower() == 'true'):
     am_pm = True
 
 
+# GET request der viser tempratur og luftfugtighed.
+app = Flask(__name__)
+@app.route('/sensehat_data', methods=['GET'])
+def sensehat_data():
+    '''Aflæser temp og luftfugtighed, returnere det i JSON format'''
+    temprature = sense.get_temperature()
+    humidity = sense.get_humidity()
+    data = {
+        'temperature': temprature,
+        'humidity': humidity
+    }
+    return jsonify(data)
+
 def main():
     '''
     ENTRY POINT TO THE PROGRAM
@@ -119,4 +133,5 @@ def main():
             display(vertical, am_pm)
 
 if __name__ == '__main__':
+    app.run(port = 5000)
     exit(main())
