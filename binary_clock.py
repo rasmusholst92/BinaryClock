@@ -107,7 +107,7 @@ if (args.am_pm.lower() == 'true'):
 
 # GET request der viser tempratur og luftfugtighed.
 app = Flask(__name__)
-@app.route('/sensehat_data', methods=['GET'])
+@app.route('/', methods=['GET'])
 def sensehat_data():
     '''Aflæser temp og luftfugtighed, returnere det i JSON format'''
     temprature = sense.get_temperature()
