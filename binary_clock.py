@@ -41,6 +41,7 @@ def dec_to_bin(value):
 def get_binary_time(am_pm):
     '''Hentning af tid i binært'''
     hour, minute, second = time.localtime()[3:6]
+
     hour = int(hour)
     if (am_pm):
         if hour >= 12:
@@ -57,6 +58,7 @@ def get_binary_time(am_pm):
 # Hvordan uret skal fremvises på RaspberryPi SenseHat modulet
 def display(vertical: bool, am_pm: bool):
     '''Display af uret på SenseHat'''
+
     binary_time = get_binary_time(am_pm)
     for x in range(8):
         for y in range(8):
