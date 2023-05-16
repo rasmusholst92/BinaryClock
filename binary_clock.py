@@ -50,7 +50,6 @@ def dec_to_bin(value):
 def get_binary_time(am_pm):
     '''Hentning af tid i binært'''
     hour, minute, second = time.localtime()[3:6]
-
     hour = int(hour)
     if (am_pm):
         if hour >= 12:
@@ -76,7 +75,6 @@ def get_binary_time_for_three_lines(am_pm):
                 hour -=12
             if hour == 0:
                 hour = 12
-
     binary_hour_tens = format(int(hour / 10), '08b')
     binary_hour_ones = format(int(hour % 10), '08b')
     binary_minute_tens = format(int(minute / 10), '08b')
@@ -173,6 +171,7 @@ sense.clear()
 parser = argparse.ArgumentParser()
 parser.add_argument('--vertical', type=str, default="false", help="Diplay vertical")
 parser.add_argument('--am_pm', type=str,default="false", help="Display 12-hour format")
+parser.add_argument('--three_lines', type=str,default="false", help="Display 12-hour format")
 args = parser.parse_args()
 
 if (args.vertical.lower() == 'true'):
@@ -180,6 +179,9 @@ if (args.vertical.lower() == 'true'):
 
 if (args.am_pm.lower() == 'true'):
     am_pm = True
+
+if (args.three_lines.lower() == 'true'):
+    three_lines = True
 
 
 # GET request der viser temperatur og luftfugtighed
